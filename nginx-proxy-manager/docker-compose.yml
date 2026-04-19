@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  nginx-proxy-manager: # Cambiado de 'npm' a 'gateway'
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager # Nombre fijo para el contenedor
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true
