@@ -21,9 +21,9 @@ services:
       #red-local-docker:
         #ipv4_address: 172.20.0.9
 
-#networks:
-  #red-local-docker:
-    #external: true
+networks:
+  proxy-network:
+    external: true
 
 volumes:
   jenkins_home:
