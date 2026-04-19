@@ -11,7 +11,7 @@ services:
       - "50000:50000"
     environment:
       - JENKINS_ADMIN_ID=admin
-      - JENKINS_ADMIN_PASSWORD=K0ULhQO$66zbR%,
+      - JENKINS_ADMIN_PASSWORD=K0ULhQO$66zbR
     volumes:
       - jenkins_home:/var/jenkins_home
       - /usr/local/bin/docker:/usr/local/bin/docker  # Corregido: monta el archivo binario

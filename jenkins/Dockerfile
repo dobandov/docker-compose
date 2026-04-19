@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \ 
     ca-certificates \
     curl \
-    software-properties-common
+    gnupg \
+    lsb-release
 
 # Instalar Docker
-RUN curl -4fsSL https://download.docker.com/linux/ubuntu/gpg |  apt-key add -
+# Sustituimos 'apt-key add' por una descarga directa al llavero de llaves confiables
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg -o /usr/share/keyrings/docker-archive-keyring.gpg
 RUN curl https://get.docker.com/ > dockerinstall && chmod 777 dockerinstall && ./dockerinstall
 
 # Instalar Docker Compose
