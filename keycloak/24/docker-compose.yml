@@ -1,42 +1,39 @@
-version: '3'
+version: '3.8'
 services: 
   keycloak:
-    #image: jboss/keycloak:16.1.0
-    container_name:   keycloak-24
+    container_name: keycloak-24
     build:
       context: .
       dockerfile: Dockerfile
-    command: start-dev   --verbose -Dkeycloak.profile.feature.upload_scripts=enabled  
+    # Usar 'start' para producción, 'start-dev' solo para desarrollo
+    command: start --optimized
     environment:
-        container_name: keycloak
-        #DB_VENDOR: POSTGRES
-        #DB_ADDR: 172.20.0.2
-        #DB_PORT: 5432
-        #DB_DATABASE:   
-        #DB_USER: postgres
-        #DB_SCHEMA: public
-        #DB_PASSWORD: sfuKTJGExBqRTpPJXubX
-        #KEYCLOAK_USER: admin
-        #KEYCLOAK_PASSWORD: admin
-        KEYCLOAK_ADMIN: admin
-        KEYCLOAK_ADMIN_PASSWORD: admin
-        KC_DB: postgres
-        KC_DB_URL_DATABASE: keycloak-24
-        KC_DB_URL_HOST: 172.20.0.2
-        KC_DB_URL_PORT: 5432
-        KC_DB_USERNAME: postgres
-        KC_DB_PASSWORD: sfuKTJGExBqRTpPJXubX
-        KC_DB_SCHEMA: public
-        KC_FEATURES: scripts
-        
-    #restart: unless-stopped
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_DATABASE: keycloak-24
+      KC_DB_URL_HOST: postgres-db1
+      KC_DB_URL_PORT: 5432
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: sfuKTJGExBqRTpPJXubX
+      KC_DB_SCHEMA: public
+      KC_FEATURES: scripts
+      KC_PROXY: xforwarded
+      KC_HTTP_ENABLED: "true"
+    restart: unless-stopped
     ports:
-        - 7029:8080
+      - 7029:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     networks:
-      red-local-docker:
-        ipv4_address: 172.20.0.3
+      - postgres-network
+
+volumes: {}
 
 networks:
-  red-local-docker:
+  postgres-network:
     external: true
-#docker-compose -f dockerfile.yml up -d

@@ -1,13 +1,12 @@
-FROM keycloak-keycloak:latest
+FROM keycloak/keycloak:24.0.0
+
 # Configurar variables de entorno para UTF-8
 ENV LANG=C.UTF-8
 ENV LANGUAGE=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
-#COPY themes/zabud /opt/keycloak/themes/zabud
-#COPY realm-export.json /tmp/realm-export.json
-#ENV KEYCLOAK_IMPORT=/tmp/realm-export.json
+# Copiar temas personalizados
+COPY themes/zabud /opt/keycloak/themes/zabud
+
+# Configuración de Java
 ENV JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
-#RUN sed -i -E "s/(<staticMaxAge>)2592000(<\/staticMaxAge>)/\1\-1\2/" /opt/jboss/keycloak/standalone/configuration/standalone.xml
-#RUN sed -i -E "s/(<cacheThemes>)true(<\/cacheThemes>)/\1false\2/" /opt/jboss/keycloak/standalone/configuration/standalone.xml3
-#RUN sed -i -E "s/(<cacheTemplates>)true(<\/cacheTemplates>)/\1false\2/" /opt/jboss/keycloak/standalone/configuration/standalone.xml
