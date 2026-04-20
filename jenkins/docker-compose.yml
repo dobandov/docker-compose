@@ -25,7 +25,7 @@ services:
 
 networks:
   proxy-network:
-    external: true
-
+    name: proxy-network # Esto asegura que la red se llame así en todo el sistema
+    driver: bridge
 volumes:
   jenkins_home:
