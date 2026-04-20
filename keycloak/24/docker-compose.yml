@@ -32,7 +32,9 @@ services:
     networks:
       - postgres-network
 
-volumes: {}
+volumes:
+  keycloak-data:
+    driver: local
 
 networks:
   postgres-network:

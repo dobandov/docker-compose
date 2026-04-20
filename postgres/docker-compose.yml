@@ -13,12 +13,14 @@ services:
     # networks:
     #   red-local-docker:
     #     ipv4_address: 172.20.0.2
+    networks:
+      - postgres-network
 
 volumes:
   db:
     driver: local
 
 networks:
-  proxy-network:
+  postgres-network:
     name: postgres-network
     driver: bridge
