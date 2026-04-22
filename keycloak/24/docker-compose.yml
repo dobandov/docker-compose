@@ -12,7 +12,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_DB: postgres
       KC_DB_URL_DATABASE: keycloak-24
-      KC_DB_URL_HOST: postgres-db1
+      KC_DB_URL_HOST: jdbc:postgresql://postgres-db1:5432/keycloak
       KC_DB_URL_PORT: 5432
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: sfuKTJGExBqRTpPJXubX
