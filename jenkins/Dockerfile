@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    lsb-release \
+    sudo
 
 # Instalar Docker
 # Sustituimos 'apt-key add' por una descarga directa al llavero de llaves confiables
