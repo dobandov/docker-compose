@@ -19,6 +19,7 @@ services:
       KC_DB_SCHEMA: public
       KC_FEATURES: scripts
       KC_PROXY: edge
+      KC_HOSTNAME: keycloak.dobandov.com
       KC_HTTP_ENABLED: "true"
     restart: unless-stopped
     ports:
