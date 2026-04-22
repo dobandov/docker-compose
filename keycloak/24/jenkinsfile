@@ -2,25 +2,55 @@ pipeline {
     agent any
 
     stages {
-        stage('Keycloak Context') {
+        stage('Keycloak Deployment Context') {
             steps {
                 script {
-                    // Todo lo que ocurra dentro de este bloque dir 
-                    // respetará la jerarquía de stages para la UI de Jenkins
+                    // Todo ocurre dentro del directorio del proyecto
                     dir('keycloak/24') {
-                        // Llamamos a los stages internos
-                        stage('Validar') {
+                        
+                        stage('Validar Entorno') {
+                            sh 'docker compose version'
                             sh 'ls -la'
+                            // Validar que el archivo .env o config existe si fuera necesario
                         }
-                        stage('Build') {
-                            sh 'ls -la'
+
+                        stage('Build & Push') {
+                            echo "Construyendo imagen personalizada de Keycloak 24..."
+                            sh 'docker compose build --no-cache'
                         }
-                        stage('Test') {
-                            sh 'echo "Haciendo tests en $(pwd)"'
+
+                        stage('Deploy') {
+                            echo "Levantando servicios en segundo plano..."
+                            sh 'docker compose up -d'
+                        }
+
+                        stage('Health Check') {
+                            echo "Verificando estado del contenedor..."
+                            // Espera activa hasta que el contenedor reporte 'healthy'
+                            sh '''
+                                count=0
+                                until [ "$(docker inspect --format='{{.State.Health.Status}}' keycloak)" == "healthy" ] || [ $count -eq 20 ]; do
+                                    echo "Esperando a Keycloak... ($((count+1))/20)"
+                                    sleep 10
+                                    count=$((count+1))
+                                done
+                                
+                                if [ "$(docker inspect --format='{{.State.Health.Status}}' keycloak)" != "healthy" ]; then
+                                    echo "Error: Keycloak no inició a tiempo."
+                                    docker logs keycloak --tail 20
+                                    exit 1
+                                fi
+                            '''
                         }
                     }
                 }
             }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs() // Limpiar el workspace de Jenkins
         }
     }
 }
