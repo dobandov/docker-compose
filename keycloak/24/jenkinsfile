@@ -11,8 +11,7 @@ pipeline {
         stage('Validar') {
             steps {
                 // Aquí ya estás dentro de keycloak/24 automáticamente
-                sh 'ls -lh'
-                sh 'cat Dockerfile'
+                sh 'ls -laR'
             }
         }
         stage('Build') {
