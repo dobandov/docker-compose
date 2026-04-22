@@ -1,23 +1,25 @@
 pipeline {
-    agent {
-        node {
-            label '' 
-            // Jenkins usará esta subcarpeta como base para TODO el pipeline
-            customWorkspace "${env.WORKSPACE}/keycloak/24"
-        }
-    }
+    agent any
 
     stages {
-        stage('Validar') {
+        stage('Keycloak Context') {
             steps {
-                // Aquí ya estás dentro de keycloak/24 automáticamente
-                sh 'ls -laR'
-            }
-        }
-        stage('Build') {
-            steps {
-                // No necesitas dir() aquí tampoco
-                sh 'docker build -t mi-app .'
+                script {
+                    // Todo lo que ocurra dentro de este bloque dir 
+                    // respetará la jerarquía de stages para la UI de Jenkins
+                    dir('keycloak/24') {
+                        // Llamamos a los stages internos
+                        stage('Validar') {
+                            sh 'ls -laR'
+                        }
+                        stage('Build') {
+                            sh 'ls -laR'
+                        }
+                        stage('Test') {
+                            sh 'echo "Haciendo tests en $(pwd)"'
+                        }
+                    }
+                }
             }
         }
     }
