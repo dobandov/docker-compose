@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    // Aquí NO ponemos skipDefaultCheckout, así que Jenkins clona todo el repo al iniciar
+    
+    stages {
+        stage('Validar Archivos') {
+            steps {
+                // Nos movemos a la subcarpeta del proyecto
+                dir('keycloak/24') {
+                    sh '''
+                        echo "Trabajando en: $(pwd)"
+                        echo "--- Listando archivos ---"
+                        ls -F
+                        
+                        if [ -f "docker-compose.yml" ]; then
+                            echo "✅ Se encontró el compose."
+                        fi
+                    '''
+                }
+            }
+        }
+        
+        stage('Docker Info') {
+            steps {
+                dir('keycloak/24') {
+                    // Aquí ya podrías hacer un build usando el Dockerfile de esa carpeta
+                    sh 'docker build -t mi-keycloak-custom:latest .'
+                }
+            }
+        }
+    }
+}
