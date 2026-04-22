@@ -6,6 +6,19 @@ pipeline {
     stages {
         stage('Validar Archivos') {
             steps {
+                    sh '''
+                        echo "Trabajando en: $(pwd)"
+                        echo "--- Listando archivos pre---"
+                        ls -F
+                        
+                        if [ -f "docker-compose.yml" ]; then
+                            echo "✅ Se encontró el compose."
+                        fi
+                    '''
+            }
+        }
+        stage('Validar Archivos') {
+            steps {
                 // Nos movemos a la subcarpeta del proyecto
                 dir('keycloak/24') {
                     sh '''
