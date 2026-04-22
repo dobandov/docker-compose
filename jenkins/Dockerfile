@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 # Añadir al usuario jenkins al grupo docker
 # Nota: Esto permite que jenkins use el socket si los GIDs coinciden
 RUN sudo usermod -a -G docker jenkins
-
+RUN sudo usermod -a -G docker $USER
 
 # Instalar Docker Compose V2 (Sustituye a la versión 1.29.2 por ser más estable)
 RUN mkdir -p /usr/local/lib/docker/cli-plugins/ && \
