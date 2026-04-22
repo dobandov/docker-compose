@@ -5,35 +5,19 @@ pipeline {
             customWorkspace "${env.WORKSPACE}/keycloak/24"
         }
     }
+
     stages {
-        stage('Validar Archivos2') {
+        stage('Validar') {
             steps {
-                    sh '''
-                        echo "Trabajando en: $(pwd)"
-                        echo "--- Listando archivos pre---"
-                        ls -F
-                    '''
+                // Aquí ya estás dentro de keycloak/24 automáticamente
+                sh 'ls -lh'
+                sh 'cat Dockerfile'
             }
         }
-        stage('Validar Archivos') {
+        stage('Build') {
             steps {
-                // Nos movemos a la subcarpeta del proyecto
-                dir('keycloak/24') {
-                    sh '''
-                        echo "Trabajando en: $(pwd)"
-                        echo "--- Listando archivos ---"
-                        ls -F
-                    '''
-                }
-            }
-        }
-        
-        stage('Docker Info') {
-            steps {
-                dir('keycloak/24') {
-                    // Aquí ya podrías hacer un build usando el Dockerfile de esa carpeta
-                    sh 'docker build -t mi-keycloak-custom:latest .'
-                }
+                // No necesitas dir() aquí tampoco
+                sh 'docker build -t mi-app .'
             }
         }
     }
