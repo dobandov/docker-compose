@@ -4,7 +4,7 @@ pipeline {
     // Aquí NO ponemos skipDefaultCheckout, así que Jenkins clona todo el repo al iniciar
     
     stages {
-        stage('Validar Archivos') {
+        stage('Validar Archivos2') {
             steps {
                     sh '''
                         echo "Trabajando en: $(pwd)"
