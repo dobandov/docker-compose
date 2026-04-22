@@ -1,8 +1,10 @@
 pipeline {
-    agent any
-
-    // Aquí NO ponemos skipDefaultCheckout, así que Jenkins clona todo el repo al iniciar
-    
+    agent {
+        node {
+            // Jenkins usará esta subcarpeta como base para TODO el pipeline
+            customWorkspace "${env.WORKSPACE}/keycloak/24"
+        }
+    }
     stages {
         stage('Validar Archivos2') {
             steps {
@@ -10,10 +12,6 @@ pipeline {
                         echo "Trabajando en: $(pwd)"
                         echo "--- Listando archivos pre---"
                         ls -F
-                        
-                        if [ -f "docker-compose.yml" ]; then
-                            echo "✅ Se encontró el compose."
-                        fi
                     '''
             }
         }
@@ -25,10 +23,6 @@ pipeline {
                         echo "Trabajando en: $(pwd)"
                         echo "--- Listando archivos ---"
                         ls -F
-                        
-                        if [ -f "docker-compose.yml" ]; then
-                            echo "✅ Se encontró el compose."
-                        fi
                     '''
                 }
             }
