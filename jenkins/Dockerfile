@@ -1,23 +1,27 @@
 FROM jenkins/jenkins:lts
 
-# Instalar dependencias necesarias
+# Cambiar a root para instalar herramientas
 USER root
+
+# Instalar dependencias mínimas y el cliente de Docker
 RUN apt-get update && apt-get install -y \
-    apt-transport-https \ 
+    apt-transport-https \
     ca-certificates \
     curl \
     gnupg \
     lsb-release \
-    sudo
+    sudo \
+    && curl -fsSL https://get.docker.com | sh
 
-# Instalar Docker
-# Sustituimos 'apt-key add' por una descarga directa al llavero de llaves confiables
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg -o /usr/share/keyrings/docker-archive-keyring.gpg
-RUN curl https://get.docker.com/ > dockerinstall && chmod 777 dockerinstall && ./dockerinstall
-
+# Añadir al usuario jenkins al grupo docker
+# Nota: Esto permite que jenkins use el socket si los GIDs coinciden
 RUN usermod -aG docker jenkins
-RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
-    && chmod +x /usr/local/bin/docker-compose
 
-# Asegúrate de que el directorio de Jenkins sea propiedad del usuario jenkins
+# Instalar Docker Compose V2 (Sustituye a la versión 1.29.2 por ser más estable)
+RUN mkdir -p /usr/local/lib/docker/cli-plugins/ && \
+    curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose && \
+    chmod +x /usr/local/lib/docker/cli-plugins/docker-compose && \
+    ln -s /usr/local/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+
+# Volver al usuario jenkins para seguridad
 USER jenkins
