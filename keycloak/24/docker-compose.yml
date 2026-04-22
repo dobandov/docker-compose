@@ -18,7 +18,7 @@ services:
       KC_DB_PASSWORD: sfuKTJGExBqRTpPJXubX
       KC_DB_SCHEMA: public
       KC_FEATURES: scripts
-      KC_PROXY: xforwarded
+      KC_PROXY: edge
       KC_HTTP_ENABLED: "true"
     restart: unless-stopped
     ports:
