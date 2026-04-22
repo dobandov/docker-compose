@@ -10,10 +10,10 @@ pipeline {
                     dir('keycloak/24') {
                         // Llamamos a los stages internos
                         stage('Validar') {
-                            sh 'ls -laR'
+                            sh 'ls -la'
                         }
                         stage('Build') {
-                            sh 'ls -laR'
+                            sh 'ls -la'
                         }
                         stage('Test') {
                             sh 'echo "Haciendo tests en $(pwd)"'
