@@ -1,6 +1,7 @@
 pipeline {
     agent {
         node {
+            label '' 
             // Jenkins usará esta subcarpeta como base para TODO el pipeline
             customWorkspace "${env.WORKSPACE}/keycloak/24"
         }
