@@ -1,0 +1,16 @@
+services:
+  bedrock:
+    image: itzg/minecraft-bedrock-server
+    container_name: minecraft-bedrock
+    environment:
+      EULA: "TRUE"
+      VERSION: "LATEST"
+      GAMEMODE: "survival"
+      DIFFICULTY: "normal"
+    ports:
+      - "19132:19132/udp"
+    volumes:
+      - ./data:/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
