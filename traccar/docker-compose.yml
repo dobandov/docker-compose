@@ -10,6 +10,8 @@ services:
       TIMESCALEDB_TELEMETRY: "off"
     volumes:
       - /opt/traccar/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   traccar:
     image: traccar/traccar:latest
