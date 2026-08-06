@@ -11,7 +11,7 @@ services:
     volumes:
       - /opt/traccar/data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "54321:54321"
 
   traccar:
     image: traccar/traccar:latest
@@ -21,7 +21,7 @@ services:
     environment:
       CONFIG_USE_ENVIRONMENT_VARIABLES: "true"
       DATABASE_DRIVER: org.postgresql.Driver
-      DATABASE_URL: jdbc:postgresql://database:5432/traccar
+      DATABASE_URL: jdbc:postgresql://database:54321/traccar
       DATABASE_USER: traccar
       DATABASE_PASSWORD: traccar
     healthcheck:
